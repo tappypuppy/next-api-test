@@ -1,6 +1,5 @@
-import { cp } from "fs";
 import { FormEvent, useState } from "react";
-import internal from "stream";
+
 
 interface MessageType {
   id: number;
@@ -23,31 +22,36 @@ export default function Form() {
     };
     const updateMessage = [...chatLog, newUserMessage];
 
-
     const res = await fetch(`/api`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json;charset=UTF-8",
       },
       body: JSON.stringify({
-        userId: "test_user",
+        userId: "kazuki_20240512_3",
         prompt: formData.get("input"),
       }),
     });
-
-
 
     // Handle response if necessary
     const msg_json = await res.json();
 
     const newGPTId = newId + 1;
-    const newGPTMessage = { id: newGPTId, context: msg_json.data.output, sender: "gpt" };
+    const newGPTMessage = {
+      id: newGPTId,
+      context: msg_json.data.output,
+      sender: "gpt",
+    };
     setChatLog([...updateMessage, newGPTMessage]);
-
   }
 
   return (
     <div>
+      <div>
+        gpt: こんにちは!カウンセラーのcocoroです。
+        <br />
+        悩み事と、その時の気持ちについてお聞かせください。私はあなたの味方です。
+      </div>
       {chatLog.map((message) => (
         <div key={message.id}>
           {message.sender}: {message.context}
